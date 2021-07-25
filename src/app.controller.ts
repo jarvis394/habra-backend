@@ -5,7 +5,6 @@ import nodeHtmlToImage from 'node-html-to-image'
 import socialPreviewHTML from './config/socialPreviewHTML'
 import { Response as ExpressResponse } from 'express'
 import { GetAccountAuthDataDto } from './dto/get-account-auth-data.dto'
-import { AxiosResponse } from 'axios'
 import { AccountAuthDataResponse } from './interfaces/AccountAuthDataResponse'
 import { GetCSRFTokenDto } from './dto/get-csrf-token.dto'
 
@@ -26,18 +25,18 @@ export class AppController {
 		return response.end(image)
 	}
 	
-	@Post()
+	@Post('/getAccountAuthData')
 	async getAccountAuthData(@Body() getAccountAuthDataDto: GetAccountAuthDataDto): Promise<AccountAuthDataResponse> {
-		return this.appService.getAccountAuthData(getAccountAuthDataDto)
+		return await this.appService.getAccountAuthData(getAccountAuthDataDto)
 	}
 
-	@Post()
+	@Post('/getCSRFToken')
 	async getCSRFToken(@Body() getCSRFTokenDto: GetCSRFTokenDto): Promise<string> {
-		return this.appService.getCSRFToken(getCSRFTokenDto)
+		return await this.appService.getCSRFToken(getCSRFTokenDto)
 	}
 
-	@Post()
-	async makeRequest(@Body() makeRequestDto: MakeRequestDto): Promise<AxiosResponse | Error> {
-		return this.appService.makeRequest(makeRequestDto)
+	@Post('/makeRequest')
+	async makeRequest(@Body() makeRequestDto: MakeRequestDto): Promise<unknown | Error> {
+		return await this.appService.makeRequest(makeRequestDto)
 	}
 }

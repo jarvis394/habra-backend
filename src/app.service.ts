@@ -15,7 +15,9 @@ export class AppService {
 		return rootMessage
 	}
 
-	async getAccountAuthData(data: GetAccountAuthDataDto): Promise<AccountAuthDataResponse> {
+	async getAccountAuthData(
+		data: GetAccountAuthDataDto
+	): Promise<AccountAuthDataResponse> {
 		const authData = await getAccountAuthData(data)
 		return authData
 	}
@@ -25,18 +27,24 @@ export class AppService {
 		return csrfToken
 	}
 
-	async makeRequest(data: MakeRequestDto): Promise<Error | AxiosResponse> {
+	async makeRequest(data: MakeRequestDto): Promise<Error | unknown> {
 		try {
-			const requestParams: Record<string, any> = JSON.parse(data.requestParams || '{}')
-			const { connectSID, csrfToken } = data
+			const {
+				connectSID,
+				csrfToken,
+				version,
+				requestParams,
+				method,
+			} = data
 			const response = await makeRequest({
 				connectSID,
 				csrfToken,
-				method: data.method,
-				requestParams
+				method,
+				requestParams,
+				version,
 			})
 
-			return response
+			return response.data
 		} catch (e) {
 			throw new BadRequestException('Bad JSON format for `requestParams`')
 		}
