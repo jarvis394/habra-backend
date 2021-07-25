@@ -28,6 +28,6 @@ const env: EnvConfig = validate(dotenv.parse(fs.readFileSync(filePath)))
 /**
  * Application main port
  */
-export const PORT = 4000// Number(env.PORT)
+export const PORT = Number(env.PORT)
 
 export const CLIENT_ID = '85cab69095196f3.89453480'
