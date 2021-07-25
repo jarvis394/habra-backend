@@ -1,5 +1,6 @@
 export class MakeRequestDto {
-	token: string
+	connectSID: string
+	csrfToken?: string
 	method: string
-	request?: string
+	requestParams?: string
 }
