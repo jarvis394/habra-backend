@@ -2,7 +2,6 @@ import { Injectable, BadRequestException } from '@nestjs/common'
 import { MakeRequestDto } from './dto/make-request.dto'
 import { GetAccountAuthDataDto } from './dto/get-account-auth-data.dto'
 import { makeRequest, getAccountAuthData, getCSRFToken } from 'habra-auth'
-import { AxiosResponse } from 'axios'
 import { GetCSRFTokenDto } from './dto/get-csrf-token.dto'
 import { AccountAuthDataResponse } from './interfaces/AccountAuthDataResponse'
 
