@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Post, Query, Res } from '@nestjs/common'
+import {
+	Body,
+	Controller,
+	Get,
+	HttpStatus,
+	Post,
+	Query,
+	Res,
+} from '@nestjs/common'
 import { AppService } from './app.service'
 import { MakeRequestDto } from './dto/make-request.dto'
 import nodeHtmlToImage from 'node-html-to-image'
@@ -16,27 +24,43 @@ export class AppController {
 	getRootMessage(): string {
 		return this.appService.getRootMessage()
 	}
-	
+
 	@Get('/social')
-	async getSocialPreview(@Query('t') title: string, @Query('s') subtitle: string, @Res() response: ExpressResponse) {
+	async getSocialPreview(
+		@Query('t') title: string,
+		@Query('s') subtitle: string,
+		@Res() response: ExpressResponse
+	) {
 		const image = await nodeHtmlToImage({
-			html: socialPreviewHTML(title, subtitle)
+			html: socialPreviewHTML(title, subtitle),
 		})
 		return response.end(image)
 	}
-	
+
 	@Post('/getAccountAuthData')
-	async getAccountAuthData(@Body() getAccountAuthDataDto: GetAccountAuthDataDto): Promise<AccountAuthDataResponse> {
+	async getAccountAuthData(
+		@Res({ passthrough: true }) response: ExpressResponse,
+		@Body() getAccountAuthDataDto: GetAccountAuthDataDto
+	): Promise<AccountAuthDataResponse> {
+		response.status(HttpStatus.OK)
 		return await this.appService.getAccountAuthData(getAccountAuthDataDto)
 	}
 
 	@Post('/getCSRFToken')
-	async getCSRFToken(@Body() getCSRFTokenDto: GetCSRFTokenDto): Promise<string> {
+	async getCSRFToken(
+		@Res({ passthrough: true }) response: ExpressResponse,
+		@Body() getCSRFTokenDto: GetCSRFTokenDto
+	): Promise<string> {
+		response.status(HttpStatus.OK)
 		return await this.appService.getCSRFToken(getCSRFTokenDto)
 	}
 
 	@Post('/makeRequest')
-	async makeRequest(@Body() makeRequestDto: MakeRequestDto): Promise<unknown | Error> {
+	async makeRequest(
+		@Res({ passthrough: true }) response: ExpressResponse,
+		@Body() makeRequestDto: MakeRequestDto
+	): Promise<unknown | Error> {
+		response.status(HttpStatus.OK)
 		return await this.appService.makeRequest(makeRequestDto)
 	}
 }
